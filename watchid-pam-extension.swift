@@ -15,6 +15,9 @@ public typealias pam_handle_t = UnsafeRawPointer?
 
 @_cdecl("pam_sm_authenticate")
 public func pam_sm_authenticate(pamh: pam_handle_t, flags: CInt, argc: CInt, argv: vchar) -> CInt {
+    if (ProcessInfo.processInfo.environment["SSH_TTY"] != nil) {
+        return PAM_IGNORE;
+    }
     let sudoArguments = ProcessInfo.processInfo.arguments
     if sudoArguments.contains("-A") || sudoArguments.contains("--askpass") {
         return PAM_IGNORE
@@ -80,7 +83,11 @@ private func parseArguments(argc: Int, argv: vchar) -> [String: String] {
 
 private extension LAPolicy {
     static var deviceOwnerAuthenticationIgnoringUserID: LAPolicy {
+#if HASCOMPANION
+        return .deviceOwnerAuthenticationWithBiometricsOrCompanion
+#else
         return .deviceOwnerAuthenticationWithBiometricsOrWatch
+#endif
     }
 }
 
