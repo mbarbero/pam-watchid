@@ -1,4 +1,4 @@
-VERSION = 2
+VERSION = 3
 LIBRARY_NAME = pam_watchid.so
 DESTINATION = /usr/local/lib/pam
 TARGET = $(shell clang -dumpmachine)
@@ -8,4 +8,4 @@ all:
 
 install: all
 	mkdir -p $(DESTINATION)
-	install -o root -g wheel -m 444 $(LIBRARY_NAME) $(DESTINATION)/$(LIBRARY_NAME).$(VERSION)
+	sudo install -o root -g wheel -m 444 $(LIBRARY_NAME) $(DESTINATION)/$(LIBRARY_NAME).$(VERSION)
