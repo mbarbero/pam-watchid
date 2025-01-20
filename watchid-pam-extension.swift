@@ -28,7 +28,7 @@ public func pam_sm_authenticate(pamh: pam_handle_t, flags: CInt, argc: CInt, arg
     reason = reason.isEmpty ? DEFAULT_REASON : reason
 
     let policy: LAPolicy;
-    if #available(macOS 10.12.2, *) {
+    if #available(macOS 10.15, *) {
         policy = LAPolicy.deviceOwnerAuthenticationWithBiometricsOrCompanion
     } else {
         policy = LAPolicy.deviceOwnerAuthenticationWithBiometricsOrWatch
